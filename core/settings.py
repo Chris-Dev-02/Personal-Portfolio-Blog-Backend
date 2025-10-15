@@ -71,6 +71,14 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',  # Default Backend
+    'apps.accounts.backends.EmailOrUsernameModelBackend',  # Personalized backend
+)
+
+# Custom User Model
+AUTH_USER_MODEL = 'apps.accounts.CustomUser'
+
 # CORS settings
 if DEBUG:
     CORS_ALLOW_ALL_ORIGINS = True
