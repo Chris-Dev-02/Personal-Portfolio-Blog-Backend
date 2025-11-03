@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.contrib.auth.models import User
 from .models import Technology, ContentBlock
 
 class TechnologySerializer(serializers.ModelSerializer):
@@ -46,3 +47,34 @@ class ContentBlockSerializer(serializers.ModelSerializer):
             if text_content:
                 raise serializers.ValidationError('Multimedia blocks must not have text content.')
         return data
+    
+class EntryContentSerializer(serializers.ModelSerializer):
+    author = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())  # Change to editable PrimaryKeyRelatedField
+    technologies = serializers.PrimaryKeyRelatedField(
+        many=True,
+        queryset=Technology.objects.all()
+    )
+
+    class Meta:
+        model = ContentBlock
+        fields = [
+            'id',
+            'title',
+            'slug',
+            'body',
+            'author',
+            'type',
+            'status',
+            'technologies',
+            'parent_article',
+            'created_at',
+            'updated_at',
+        ]
+        read_only_fields = ['slug', 'created_at', 'updated_at'] 
+
+
+class ArticleDetailSerializer(ContentBlockSerializer):
+    content_blocks = ContentBlockSerializer(many=True, read_only=True)
+
+    class Meta(ContentBlockSerializer.Meta):
+        fields = ContentBlockSerializer.Meta.fields + ['content_blocks']
