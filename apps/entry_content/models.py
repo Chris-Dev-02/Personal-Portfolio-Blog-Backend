@@ -78,3 +78,45 @@ class EntryContent(models.Model):
 
     def __str__(self):
         return self.title
+    
+
+class ContentBlock(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+
+    # Content block type
+    TEXT = 'text'
+    IMAGE = 'image'
+    VIDEO = 'video'
+    GIF = 'gif'
+    BLOCK_TYPES = [
+        (TEXT, 'Text'),
+        (IMAGE, 'Image'),
+        (VIDEO, 'Video'),
+        (GIF, 'GIF'),
+    ]
+
+    article = models.ForeignKey(EntryContent, related_name='content_blocks', on_delete=models.CASCADE)
+    type = models.CharField(max_length=10, choices=BLOCK_TYPES)
+
+    # Content separation
+    text_content = models.TextField(blank=True, null=True)
+    file = models.FileField(upload_to='content_files/', blank=True, null=True)
+
+    order = models.PositiveIntegerField()
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['order']
+
+    def clean(self):
+        if self.type == self.TEXT and not self.text_content:
+            raise ValidationError('Text blocks must have text content.')
+        if self.type != self.TEXT and not self.file:
+            raise ValidationError('Multimedia blocks must have a file.')
+        if self.type == self.TEXT and self.file:
+            raise ValidationError('Text blocks must not have a file.')
+
+    def __str__(self):
+        return f'{self.type} - {self.article.title}'
