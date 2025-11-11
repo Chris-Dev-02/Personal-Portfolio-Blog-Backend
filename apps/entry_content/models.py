@@ -12,6 +12,7 @@ class Technology(models.Model):
     thumbnail = models.FileField(upload_to='content_files/', blank=True, null=True)
     description = models.TextField()
     created_at = models.DateTimeField(null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         verbose_name_plural = "Technologies"
