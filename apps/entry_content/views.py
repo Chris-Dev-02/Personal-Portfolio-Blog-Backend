@@ -114,3 +114,15 @@ class TechnologyListAllView(APIView):
         queryset = Technology.objects.all().select_related('user_owner')[:500]
         serializer = TechnologySerializer(queryset, many=True)
         return Response(serializer.data)
+    
+
+class TechnologyListView(generics.ListAPIView):
+    """
+    Paginated list view for technologies, ordered by name.
+    """
+    queryset = Technology.objects.all().select_related('user_owner')
+    serializer_class = TechnologySerializer
+    ordering = ['name']
+
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
