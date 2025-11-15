@@ -126,3 +126,15 @@ class TechnologyListView(generics.ListAPIView):
 
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
+    
+
+class TechnologyDetailView(generics.RetrieveAPIView):
+    """
+    Returns detailed information for a single technology by ID.
+    """
+    queryset = Technology.objects.all()
+    serializer_class = TechnologySerializer
+    lookup_field = 'id'
+
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
