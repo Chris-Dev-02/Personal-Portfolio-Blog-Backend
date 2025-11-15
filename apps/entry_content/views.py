@@ -86,3 +86,15 @@ class ContentBlockListView(generics.ListAPIView):
         if entry_content_id:
             return ContentBlock.objects.filter(entry_content__id=entry_content_id).order_by('order')
         return ContentBlock.objects.none()
+
+
+class ContentBlockDetailView(generics.RetrieveAPIView):
+    """
+    Returns detailed information for a specific content block by ID.
+    """
+    queryset = ContentBlock.objects.all()
+    serializer_class = ContentBlockSerializer
+    lookup_field = 'id'
+
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
