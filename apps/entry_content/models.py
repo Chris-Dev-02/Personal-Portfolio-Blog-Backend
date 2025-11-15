@@ -30,7 +30,7 @@ class EntryContent(models.Model):
     PROJECT = 'project'
     BLOG = 'blog'
     COMMENT = 'comment'
-    ARTICLE_TYPES = [
+    ENTRY_CONTENT_TYPES = [
         (PROJECT, 'Project'),
         (BLOG, 'Blog'),
         (COMMENT, 'Comment'),
@@ -49,7 +49,7 @@ class EntryContent(models.Model):
     thumbnail = models.FileField(upload_to='content_files/', blank=True, null=True)
     body = models.TextField()
     author = models.ForeignKey('auth.User', on_delete=models.CASCADE)
-    type = models.CharField(max_length=10, choices=ARTICLE_TYPES)
+    type = models.CharField(max_length=10, choices=ENTRY_CONTENT_TYPES)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default=DRAFT)
 
     technologies = models.ManyToManyField('Technology', related_name='entry-content', blank=True)
