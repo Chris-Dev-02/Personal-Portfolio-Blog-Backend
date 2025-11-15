@@ -2,11 +2,17 @@ from django.shortcuts import render
 from rest_framework import generics
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter
-from .models import EntryContent
-from .serializers import EntryContentSerializer, EntryContentDetailSerializer
+from rest_framework.views import APIView
+from rest_framework.response import Response
+
+from .models import EntryContent, ContentBlock
+from .serializers import EntryContentSerializer, EntryContentDetailSerializer, ContentBlockSerializer
 from .filters import EntryContentFilter
 
 # Create your views here.
+# ---------------------------
+# Article Views
+# ---------------------------
 class EntryContentListView(generics.ListAPIView):
     """
     Returns a paginated list of entry contents.
@@ -33,3 +39,18 @@ class EntryContentDetailView(generics.RetrieveAPIView):
 
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
+    
+
+# ---------------------------
+# Content Block Views
+# ---------------------------
+class ContentBlockListAllView(APIView):
+    """
+    Returns an unpaginated list of all content blocks (limited to 500).
+    This is useful for internal tools or cases where you need the full dataset.
+    """
+
+    def get(self, request):
+        queryset = ContentBlock.objects.all().order_by('order')[:500]
+        serializer = ContentBlockSerializer(queryset, many=True)
+        return Response(serializer.data)
