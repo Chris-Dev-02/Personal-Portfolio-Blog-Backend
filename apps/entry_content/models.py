@@ -96,7 +96,7 @@ class ContentBlock(models.Model):
         (GIF, 'GIF'),
     ]
 
-    article = models.ForeignKey(EntryContent, related_name='content_blocks', on_delete=models.CASCADE)
+    entry_content = models.ForeignKey(EntryContent, related_name='content_blocks', on_delete=models.CASCADE)
     type = models.CharField(max_length=10, choices=BLOCK_TYPES)
 
     # Content separation

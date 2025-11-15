@@ -27,7 +27,7 @@ class ContentBlockSerializer(serializers.ModelSerializer):
             'order',
             'created_at',
             'updated_at',
-            'article',
+            'entry_content',
         ]
         read_only_fields = ['created_at', 'updated_at']
 

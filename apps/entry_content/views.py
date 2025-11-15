@@ -54,3 +54,18 @@ class ContentBlockListAllView(APIView):
         queryset = ContentBlock.objects.all().order_by('order')[:500]
         serializer = ContentBlockSerializer(queryset, many=True)
         return Response(serializer.data)
+
+
+class ContentBlockListByEntryContentIdView(APIView):
+    """
+    Returns an unpaginated list of content blocks for a specific entry content (identified by UUID).
+    Useful for displaying all blocks in their correct order.
+    """
+
+    def get(self, request, entry_content_id):
+        if not entry_content_id:
+            return Response({'detail': 'The "Entry Content" parameter is required.'}, status=400)
+
+        blocks = ContentBlock.objects.filter(entry_content__id=entry_content_id).order_by('order')
+        serializer = ContentBlockSerializer(blocks, many=True)
+        return Response(serializer.data)
