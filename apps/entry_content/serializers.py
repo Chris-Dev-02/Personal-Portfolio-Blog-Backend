@@ -73,7 +73,7 @@ class EntryContentSerializer(serializers.ModelSerializer):
         read_only_fields = ['slug', 'created_at', 'updated_at'] 
 
 
-class ArticleDetailSerializer(ContentBlockSerializer):
+class EntryContentDetailSerializer(ContentBlockSerializer):
     content_blocks = ContentBlockSerializer(many=True, read_only=True)
 
     class Meta(ContentBlockSerializer.Meta):
