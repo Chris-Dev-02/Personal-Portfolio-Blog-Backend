@@ -69,3 +69,20 @@ class ContentBlockListByEntryContentIdView(APIView):
         blocks = ContentBlock.objects.filter(entry_content__id=entry_content_id).order_by('order')
         serializer = ContentBlockSerializer(blocks, many=True)
         return Response(serializer.data)
+
+
+class ContentBlockListView(generics.ListAPIView):
+    """
+    Paginated list view for content blocks, optionally filtered by article ID.
+    Designed for standard frontend consumption.
+    """
+    serializer_class = ContentBlockSerializer
+
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
+    def get_queryset(self):
+        entry_content_id = self.kwargs.get('entry_content_id')
+        if entry_content_id:
+            return ContentBlock.objects.filter(entry_content__id=entry_content_id).order_by('order')
+        return ContentBlock.objects.none()
