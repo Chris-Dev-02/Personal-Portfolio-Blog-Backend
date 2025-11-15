@@ -5,8 +5,8 @@ from rest_framework.filters import OrderingFilter
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from .models import EntryContent, ContentBlock
-from .serializers import EntryContentSerializer, EntryContentDetailSerializer, ContentBlockSerializer
+from .models import EntryContent, ContentBlock, Technology
+from .serializers import EntryContentSerializer, EntryContentDetailSerializer, ContentBlockSerializer, TechnologySerializer
 from .filters import EntryContentFilter
 
 # Create your views here.
@@ -98,3 +98,19 @@ class ContentBlockDetailView(generics.RetrieveAPIView):
 
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
+    
+
+# ---------------------------
+# Technology Views
+# ---------------------------
+
+class TechnologyListAllView(APIView):
+    """
+    Returns an unpaginated list of all technologies (up to 500), including their owners.
+    Typically used for dropdowns or admin panels.
+    """
+
+    def get(self, request):
+        queryset = Technology.objects.all().select_related('user_owner')[:500]
+        serializer = TechnologySerializer(queryset, many=True)
+        return Response(serializer.data)
