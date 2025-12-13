@@ -4,15 +4,32 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from drf_spectacular.utils import (
+    extend_schema,
+    extend_schema_view,
+    OpenApiParameter,
+)
 
 from .models import EntryContent, ContentBlock, Technology
 from .serializers import EntryContentSerializer, EntryContentDetailSerializer, ContentBlockSerializer, TechnologySerializer
 from .filters import EntryContentFilter
+from .docs_v1 import (
+    entry_content_list_docs,
+    entry_content_detail_docs,
+    content_block_list_all_docs,
+    content_block_list_by_entry_content_docs,
+    content_block_list_docs,
+    content_block_detail_docs,
+    technology_list_all_docs,
+    technology_list_docs,
+    technology_detail_docs,
+)
 
 # Create your views here.
 # ---------------------------
-# Article Views
+# Entry Content Views
 # ---------------------------
+@extend_schema_view(get=entry_content_list_docs)
 class EntryContentListView(generics.ListAPIView):
     """
     Returns a paginated list of entry contents.
@@ -29,6 +46,7 @@ class EntryContentListView(generics.ListAPIView):
         return super().get(request, *args, **kwargs)
 
 
+@extend_schema_view(get=entry_content_detail_docs)
 class EntryContentDetailView(generics.RetrieveAPIView):
     """
     Returns detailed information about a single EntryContent, including related content blocks and technologies.
@@ -44,6 +62,7 @@ class EntryContentDetailView(generics.RetrieveAPIView):
 # ---------------------------
 # Content Block Views
 # ---------------------------
+@extend_schema_view(get=content_block_list_all_docs)
 class ContentBlockListAllView(APIView):
     """
     Returns an unpaginated list of all content blocks (limited to 500).
@@ -56,6 +75,7 @@ class ContentBlockListAllView(APIView):
         return Response(serializer.data)
 
 
+@extend_schema_view(get=content_block_list_by_entry_content_docs)
 class ContentBlockListByEntryContentIdView(APIView):
     """
     Returns an unpaginated list of content blocks for a specific entry content (identified by UUID).
@@ -71,6 +91,7 @@ class ContentBlockListByEntryContentIdView(APIView):
         return Response(serializer.data)
 
 
+@extend_schema_view(get=content_block_list_docs)
 class ContentBlockListView(generics.ListAPIView):
     """
     Paginated list view for content blocks, optionally filtered by article ID.
@@ -88,6 +109,7 @@ class ContentBlockListView(generics.ListAPIView):
         return ContentBlock.objects.none()
 
 
+@extend_schema_view(get=content_block_detail_docs)
 class ContentBlockDetailView(generics.RetrieveAPIView):
     """
     Returns detailed information for a specific content block by ID.
@@ -103,7 +125,7 @@ class ContentBlockDetailView(generics.RetrieveAPIView):
 # ---------------------------
 # Technology Views
 # ---------------------------
-
+@extend_schema_view(get=technology_list_all_docs)
 class TechnologyListAllView(APIView):
     """
     Returns an unpaginated list of all technologies (up to 500), including their owners.
@@ -116,6 +138,7 @@ class TechnologyListAllView(APIView):
         return Response(serializer.data)
     
 
+@extend_schema_view(get=technology_list_docs)
 class TechnologyListView(generics.ListAPIView):
     """
     Paginated list view for technologies, ordered by name.
@@ -128,6 +151,7 @@ class TechnologyListView(generics.ListAPIView):
         return super().get(request, *args, **kwargs)
     
 
+@extend_schema_view(get=technology_detail_docs)
 class TechnologyDetailView(generics.RetrieveAPIView):
     """
     Returns detailed information for a single technology by ID.
