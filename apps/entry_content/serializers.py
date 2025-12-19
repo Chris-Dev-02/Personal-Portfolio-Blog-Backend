@@ -1,6 +1,9 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import Technology, ContentBlock
+from .models import Technology, ContentBlock, EntryContent
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 class TechnologySerializer(serializers.ModelSerializer):
     user_owner = serializers.StringRelatedField()  # Read-only, displays the username
@@ -10,7 +13,7 @@ class TechnologySerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'name',
-            'image',
+            'thumbnail',
             'description',
             'created_at',
             'user_owner'
@@ -56,7 +59,7 @@ class EntryContentSerializer(serializers.ModelSerializer):
     )
 
     class Meta:
-        model = ContentBlock
+        model = EntryContent
         fields = [
             'id',
             'title',
@@ -73,8 +76,8 @@ class EntryContentSerializer(serializers.ModelSerializer):
         read_only_fields = ['slug', 'created_at', 'updated_at'] 
 
 
-class EntryContentDetailSerializer(ContentBlockSerializer):
+class EntryContentDetailSerializer(EntryContentSerializer):
     content_blocks = ContentBlockSerializer(many=True, read_only=True)
 
-    class Meta(ContentBlockSerializer.Meta):
-        fields = ContentBlockSerializer.Meta.fields + ['content_blocks']
+    class Meta(EntryContentSerializer.Meta):
+        fields = EntryContentSerializer.Meta.fields + ['content_blocks']
