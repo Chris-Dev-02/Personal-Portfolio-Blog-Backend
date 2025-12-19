@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
-from env_utils import get_env, get_env_list
+from .env_utils import get_env, get_env_list
 
 # Load variables from .env
 from dotenv import load_dotenv
@@ -56,7 +56,8 @@ THIRD_PARTY_APPS = [
     'drf_yasg',
     'rest_framework',
     'rest_framework.authtoken',
-    'django_filters'
+    'django_filters',
+    'drf_spectacular',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -103,11 +104,11 @@ MIDDLEWARE = [
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',  # Default Backend
-    'apps.accounts.backends.EmailOrUsernameModelBackend',  # Personalized backend
+    'apps.accounts.backend.EmailOrUsernameModelBackend',  # Personalized backend
 )
 
 # Custom User Model
-AUTH_USER_MODEL = 'apps.accounts.CustomUser'
+AUTH_USER_MODEL = 'accounts.CustomUser'
 
 # CORS settings
 if DEBUG:

@@ -33,8 +33,8 @@ urlpatterns = [
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    # Incluye las URLs de tu app
-    path('api/', include('apps.articles.urls')),  # Ahora todas las URLs de la app estarán bajo /api/
+    # Custom URLs
+    path('api/', include('apps.entry_content.urls')),
 
     # OpenAPI Schema
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
