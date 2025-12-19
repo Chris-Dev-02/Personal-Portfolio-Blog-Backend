@@ -69,7 +69,7 @@ class EntryContentSerializer(serializers.ModelSerializer):
             'type',
             'status',
             'technologies',
-            'parent_article',
+            'parent_entry_content',
             'created_at',
             'updated_at',
         ]

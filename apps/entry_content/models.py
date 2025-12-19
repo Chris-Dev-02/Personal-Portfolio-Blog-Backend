@@ -56,7 +56,7 @@ class EntryContent(models.Model):
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default=DRAFT)
 
     technologies = models.ManyToManyField('Technology', related_name='entry_content', blank=True)
-    parent_article = models.ForeignKey(
+    parent_entry_content = models.ForeignKey(
         'self',
         null=True,
         blank=True,
