@@ -4,10 +4,13 @@ from django.utils.text import slugify
 from django.core.exceptions import ValidationError
 import uuid
 
+from django.conf import settings
+from apps.accounts.models import CustomUser
+
 # Create your models here.
 class Technology(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user_owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='technologies')
+    user_owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='technologies')
     name = models.CharField(max_length=150)
     thumbnail = models.FileField(upload_to='content_files/', blank=True, null=True)
     description = models.TextField()
@@ -48,11 +51,11 @@ class EntryContent(models.Model):
     slug = models.SlugField(unique=True)
     thumbnail = models.FileField(upload_to='content_files/', blank=True, null=True)
     body = models.TextField()
-    author = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     type = models.CharField(max_length=10, choices=ENTRY_CONTENT_TYPES)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default=DRAFT)
 
-    technologies = models.ManyToManyField('Technology', related_name='entry-content', blank=True)
+    technologies = models.ManyToManyField('Technology', related_name='entry_content', blank=True)
     parent_article = models.ForeignKey(
         'self',
         null=True,
@@ -120,4 +123,4 @@ class ContentBlock(models.Model):
             raise ValidationError('Text blocks must not have a file.')
 
     def __str__(self):
-        return f'{self.type} - {self.article.title}'
+        return f'{self.type} - {self.entry_content.title}'
