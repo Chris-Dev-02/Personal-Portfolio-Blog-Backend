@@ -75,9 +75,9 @@ class EntryContent(models.Model):
         super().save(*args, **kwargs)
 
     def clean(self):
-        if self.type == self.COMMENT and not self.parent_article:
+        if self.type == self.COMMENT and not self.parent_entry_content:
             raise ValidationError('Comment entries must have a parent entry.')
-        if self.type != self.COMMENT and self.parent_article:
+        if self.type != self.COMMENT and self.parent_entry_content:
             raise ValidationError('Only comment entries can have a parent entry.')
 
     def __str__(self):

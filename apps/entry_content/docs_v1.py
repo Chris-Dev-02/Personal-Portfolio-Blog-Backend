@@ -61,7 +61,7 @@ entry_content_list_docs = extend_schema(
             description="Filter by creation date (ISO 8601).",
         ),
         OpenApiParameter(
-            name="parent_article",
+            name="parent_entry_content",
             type=str,
             location=OpenApiParameter.QUERY,
             description="Filter by parent entry content UUID.",
