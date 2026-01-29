@@ -58,6 +58,7 @@ THIRD_PARTY_APPS = [
     'rest_framework.authtoken',
     'django_filters',
     'drf_spectacular',
+    'storages'
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -198,3 +199,22 @@ SECURE_HSTS_PRELOAD = True
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
+AWS_ACCESS_KEY_ID = get_env('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = get_env('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = get_env('AWS_STORAGE_BUCKET_NAME')
+AWS_S3_SIGNATURE_NAME = get_env('AWS_S3_SIGNATURE_NAME')
+AWS_S3_REGION_NAME = get_env('AWS_S3_REGION_NAME')
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL =  None
+AWS_S3_VERIFY = True
+#DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}

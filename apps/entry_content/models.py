@@ -12,7 +12,7 @@ class Technology(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user_owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='technologies')
     name = models.CharField(max_length=150)
-    thumbnail = models.FileField(upload_to='content_files/', blank=True, null=True)
+    thumbnail = models.FileField(upload_to='content_files/technology', blank=True, null=True)
     description = models.TextField()
     created_at = models.DateTimeField(null=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -49,7 +49,7 @@ class EntryContent(models.Model):
 
     title = models.CharField(max_length=255)
     slug = models.SlugField(unique=True)
-    thumbnail = models.FileField(upload_to='content_files/', blank=True, null=True)
+    thumbnail = models.FileField(upload_to='content_files/entry_content', blank=True, null=True)
     body = models.TextField()
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     type = models.CharField(max_length=10, choices=ENTRY_CONTENT_TYPES)
@@ -104,7 +104,7 @@ class ContentBlock(models.Model):
 
     # Content separation
     text_content = models.TextField(blank=True, null=True)
-    file = models.FileField(upload_to='content_files/', blank=True, null=True)
+    file = models.FileField(upload_to='content_files/content_block', blank=True, null=True)
 
     order = models.PositiveIntegerField()
 
