@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}ChrisCode{% endblock %}</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    {% block meta %}{% endblock %}
+</head>
+<body>
+
+    <header>
+        <nav aria-label="Main Navigation">
+            <ul>
+                <li><a href="{% url 'main:home' %}">Home</a></li>
+                <li><a href="{% url 'entry_content:project_list' %}">Projects</a></li>
+                <li><a href="{% url 'entry_content:blog_list' %}">Blog</a></li>
+                <li><a href="{% url 'entry_content:technology_list' %}">Technologies</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        {% block content %}
+        <!-- Main content -->
+        {% endblock %}
+    </main>
+
+    <footer>
+        <section>
+            <p>&copy; {% now "Y" %} - ChrisCode</p>
+        </section>
+    </footer>
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>
