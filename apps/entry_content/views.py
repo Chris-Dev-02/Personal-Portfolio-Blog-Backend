@@ -161,31 +161,12 @@ class TechnologyDetailView(generics.RetrieveAPIView):
     serializer_class = TechnologySerializer
     lookup_field = 'slug'
 
-    #def get(self, request, *args, **kwargs):
-        #return super().get(request, *args, **kwargs)
-
 
 
 # ---------------------------
 # Blog Views
 # ---------------------------
 class BlogListView(ListView):
-    #model = EntryContent
-    #template_name = "entry_content/blog_list.html"
-    #context_object_name = "blogs"
-    #paginate_by = 10
-
-    #def get_queryset(self):
-    #    qs = EntryContent.objects.filter(
-    #        type=EntryContent.BLOG,
-    #        status=EntryContent.PUBLISHED
-    #    )
-
-    #    search = self.request.GET.get("q")
-    #    if search:
-    #        qs = qs.filter(title__icontains=search)
-
-    #    return qs
     model = EntryContent
     template_name = "entry_content/blog_list.html"
     context_object_name = "blogs"
@@ -213,23 +194,6 @@ class BlogDetailView(DetailView):
 # ---------------------------
 # Project Views
 # ---------------------------
-# class ProjectListView(ListView):
-#     model = EntryContent
-#     template_name = "entry_content/project_list.html"
-#     context_object_name = "projects"
-#     paginate_by = 10
-
-#     def get_queryset(self):
-#         qs = EntryContent.objects.filter(
-#             type=EntryContent.PROJECT,
-#             status=EntryContent.PUBLISHED
-#         )
-
-#         tech = self.request.GET.get("technology")
-#         if tech:
-#             qs = qs.filter(technologies__slug=tech)
-
-#         return qs
 class ProjectListView(ListView):
     model = EntryContent
     template_name = "entry_content/project_list.html"
@@ -264,20 +228,10 @@ class ProjectDetailView(DetailView):
 # Technology Views
 # ---------------------------
 class TechnologyListView(ListView):
-    #model = Technology
-    #template_name = "entry_content/technology_list.html"
-    #context_object_name = "technologies"
-    #paginate_by = 12
     model = Technology
     template_name = "entry_content/technology_list.html"
     context_object_name = "technologies"
     paginate_by = 12
-
-    # def get_queryset(self):
-    #     return EntryContent.objects.filter(
-    #         type=EntryContent.BLOG,
-    #         status=EntryContent.PUBLISHED
-    #     )
 
 
 class TechnologyDetailView(DetailView):
