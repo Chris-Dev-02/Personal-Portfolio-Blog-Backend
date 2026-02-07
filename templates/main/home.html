@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+<!-- ========================= -->
+<!-- Hero / Intro -->
+<!-- ========================= -->
+<section aria-labelledby="home-intro-title">
+    <header>
+        <h1 id="home-intro-title">Hello, I'm Christopher M. G.</h1>
+    </header>
+
+    <p>
+        Welcome to my personal website, where I share projects, articles
+        and the technologies I work with.
+    </p>
+</section>
+
+<!-- ========================= -->
+<!-- Technologies -->
+<!-- ========================= -->
+<section aria-labelledby="technologies-title">
+    <header>
+        <h2 id="technologies-title">Technologies</h2>
+        <p>Technologies I've worked with in projects and articles.</p>
+    </header>
+
+    {% if technologies %}
+        <ul>
+            {% for technology in technologies %}
+                <li>
+                    <article>
+                        <header>
+                            <h3>
+                                <a href="{% url 'entry_content:technology_detail' technology.slug %}">
+                                    {{ technology.name }}
+                                </a>
+                            </h3>
+                        </header>
+
+                        <p>{{ technology.description|truncatewords:20 }}</p>
+                    </article>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>There are no technologies available.</p>
+    {% endif %}
+
+    <footer>
+        <a href="{% url 'entry_content:technology_list' %}">
+            See all technologies
+        </a>
+    </footer>
+</section>
+
+<!-- ========================= -->
+<!-- Projects -->
+<!-- ========================= -->
+<section aria-labelledby="projects-title">
+    <header>
+        <h2 id="projects-title">Projects</h2>
+        <p>A selection of projects I've worked on.</p>
+    </header>
+
+    {% if projects %}
+        <ul>
+            {% for project in projects %}
+                <li>
+                    <article>
+                        <header>
+                            <h3>
+                                <a href="{% url 'entry_content:project_detail' project.slug %}">
+                                    {{ project.title }}
+                                </a>
+                            </h3>
+                        </header>
+
+                        {% if project.thumbnail %}
+                            <figure>
+                                <img src="{{ project.thumbnail.url }}" alt="{{ project.title }}">
+                            </figure>
+                        {% endif %}
+
+                        <p>{{ project.body|truncatewords:25 }}</p>
+
+                        {% if project.technologies.all %}
+                            <footer>
+                                <p>Tecnologies:</p>
+                                <ul>
+                                    {% for tech in project.technologies.all %}
+                                        <li>{{ tech.name }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </footer>
+                        {% endif %}
+                    </article>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>There are no projects available.</p>
+    {% endif %}
+
+    <footer>
+        <a href="{% url 'entry_content:project_list' %}">
+            See all projects
+        </a>
+    </footer>
+</section>
+
+<!-- ========================= -->
+<!-- Blogs -->
+<!-- ========================= -->
+<section aria-labelledby="blogs-title">
+    <header>
+        <h2 id="blogs-title">Blog</h2>
+        <p>Latest articles.</p>
+    </header>
+
+    {% if blogs %}
+        <ul>
+            {% for blog in blogs %}
+                <li>
+                    <article>
+                        <header>
+                            <h3>
+                                <a href="{% url 'entry_content:blog_detail' blog.slug %}">
+                                    {{ blog.title }}
+                                </a>
+                            </h3>
+
+                            <p>
+                                <time datetime="{{ blog.created_at|date:'Y-m-d' }}">
+                                    {{ blog.created_at|date:"d M Y" }}
+                                </time>
+                            </p>
+                        </header>
+
+                        <p>{{ blog.body|truncatewords:30 }}</p>
+                    </article>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>There are no articles available.</p>
+    {% endif %}
+
+    <footer>
+        <a href="{% url 'entry_content:blog_list' %}">
+            See all articles
+        </a>
+    </footer>
+</section>
+
+{% endblock %}
+
