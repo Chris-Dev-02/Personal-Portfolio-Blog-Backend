@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.views.generic import ListView, DetailView
 from rest_framework import generics
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter
@@ -158,7 +159,146 @@ class TechnologyDetailView(generics.RetrieveAPIView):
     """
     queryset = Technology.objects.all()
     serializer_class = TechnologySerializer
-    lookup_field = 'id'
+    lookup_field = 'slug'
 
-    def get(self, request, *args, **kwargs):
-        return super().get(request, *args, **kwargs)
+    #def get(self, request, *args, **kwargs):
+        #return super().get(request, *args, **kwargs)
+
+
+
+# ---------------------------
+# Blog Views
+# ---------------------------
+class BlogListView(ListView):
+    #model = EntryContent
+    #template_name = "entry_content/blog_list.html"
+    #context_object_name = "blogs"
+    #paginate_by = 10
+
+    #def get_queryset(self):
+    #    qs = EntryContent.objects.filter(
+    #        type=EntryContent.BLOG,
+    #        status=EntryContent.PUBLISHED
+    #    )
+
+    #    search = self.request.GET.get("q")
+    #    if search:
+    #        qs = qs.filter(title__icontains=search)
+
+    #    return qs
+    model = EntryContent
+    template_name = "entry_content/blog_list.html"
+    context_object_name = "blogs"
+    paginate_by = 10
+
+    def get_queryset(self):
+        qs = EntryContent.objects.filter(
+            type=EntryContent.BLOG,
+            status=EntryContent.PUBLISHED
+        )
+
+        search = self.request.GET.get("q")
+        if search:
+            qs = qs.filter(title__icontains=search)
+
+        return qs
+
+class BlogDetailView(DetailView):
+    model = EntryContent
+    template_name = "entry_content/blog_detail.html"
+    context_object_name = "blog"
+
+
+
+# ---------------------------
+# Project Views
+# ---------------------------
+# class ProjectListView(ListView):
+#     model = EntryContent
+#     template_name = "entry_content/project_list.html"
+#     context_object_name = "projects"
+#     paginate_by = 10
+
+#     def get_queryset(self):
+#         qs = EntryContent.objects.filter(
+#             type=EntryContent.PROJECT,
+#             status=EntryContent.PUBLISHED
+#         )
+
+#         tech = self.request.GET.get("technology")
+#         if tech:
+#             qs = qs.filter(technologies__slug=tech)
+
+#         return qs
+class ProjectListView(ListView):
+    model = EntryContent
+    template_name = "entry_content/project_list.html"
+    context_object_name = "projects"
+    paginate_by = 10
+
+    def get_queryset(self):
+        qs = EntryContent.objects.filter(
+            type=EntryContent.PROJECT,
+            status=EntryContent.PUBLISHED
+        )
+
+        tech = self.request.GET.get("technology")
+        if tech:
+            qs = qs.filter(technologies__slug=tech)
+
+        return qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["technologies"] = Technology.objects.all()
+        return context
+
+class ProjectDetailView(DetailView):
+    model = EntryContent
+    template_name = "entry_content/project_detail.html"
+    context_object_name = "project"
+
+
+
+# ---------------------------
+# Technology Views
+# ---------------------------
+class TechnologyListView(ListView):
+    #model = Technology
+    #template_name = "entry_content/technology_list.html"
+    #context_object_name = "technologies"
+    #paginate_by = 12
+    model = Technology
+    template_name = "entry_content/technology_list.html"
+    context_object_name = "technologies"
+    paginate_by = 12
+
+    # def get_queryset(self):
+    #     return EntryContent.objects.filter(
+    #         type=EntryContent.BLOG,
+    #         status=EntryContent.PUBLISHED
+    #     )
+
+
+class TechnologyDetailView(DetailView):
+    model = Technology
+    template_name = "entry_content/technology_detail.html"
+    context_object_name = "technology"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context["projects"] = EntryContent.objects.filter(
+            technologies=self.object,
+            type=EntryContent.PROJECT,
+            status=EntryContent.PUBLISHED
+        )
+
+        context["blogs"] = EntryContent.objects.filter(
+            technologies=self.object,
+            type=EntryContent.BLOG,
+            status=EntryContent.PUBLISHED
+        )
+
+        return context
+
