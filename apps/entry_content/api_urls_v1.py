@@ -1,15 +1,4 @@
 from django.urls import path
-# from .views import (
-#     EntryContentListView,
-#     EntryContentDetailView,
-#     ContentBlockListAllView,
-#     ContentBlockListByEntryContentIdView,
-#     ContentBlockListView,
-#     ContentBlockDetailView,
-#     TechnologyListAllView,
-#     TechnologyListView,
-#     TechnologyDetailView
-# )
 from . import views
 
 urlpatterns = [
