@@ -13,6 +13,7 @@ class TechnologySerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'name',
+            'slug',
             'thumbnail',
             'description',
             'created_at',
