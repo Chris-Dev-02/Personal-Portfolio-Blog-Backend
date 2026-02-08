@@ -1,0 +1,56 @@
+<main>
+  <article>
+    <header>
+      <h1>{{ technology.name }}</h1>
+    </header>
+
+    {% if technology.thumbnail %}
+      <figure>
+        <img src="{{ technology.thumbnail.url }}" alt="{{ technology.name }}">
+      </figure>
+    {% endif %}
+
+    <section>
+      <p>{{ technology.description }}</p>
+    </section>
+
+    <section>
+      <nav aria-label="Related content">
+        <ul>
+          <li><a href="#blogs">Blogs</a></li>
+          <li><a href="#projects">Projects</a></li>
+        </ul>
+      </nav>
+
+      <section id="blogs">
+        <h2>Blogs</h2>
+        <ul>
+          {% for blog in blogs %}
+            <li>
+              <a href="{% url 'entry_content:blog_detail' blog.slug %}">
+                {{ blog.title }}
+              </a>
+            </li>
+          {% empty %}
+            <li>No blogs available.</li>
+          {% endfor %}
+        </ul>
+      </section>
+
+      <section id="projects">
+        <h2>Projects</h2>
+        <ul>
+          {% for project in projects %}
+            <li>
+              <a href="{% url 'entry_content:project_detail' project.slug %}">
+                {{ project.title }}
+              </a>
+            </li>
+          {% empty %}
+            <li>No projects available.</li>
+          {% endfor %}
+        </ul>
+      </section>
+    </section>
+  </article>
+</main>

@@ -1,0 +1,36 @@
+<main>
+  <header>
+    <h1>Projects</h1>
+
+    <form method="get">
+      <label for="technology">Technology</label>
+      <select id="technology" name="technology">
+        <option value="">All</option>
+        {% for tech in technologies %}
+          <option value="{{ tech.slug }}"
+            {% if request.GET.technology == tech.slug %}selected{% endif %}
+          >
+            {{ tech.name }}
+          </option>
+        {% endfor %}
+      </select>
+      <button type="submit">Filter</button>
+    </form>
+  </header>
+
+  <section aria-label="Project list">
+    {% for project in projects %}
+      <article>
+        <h2>
+          <a href="{% url 'entry_content:project_detail' project.slug %}">
+            {{ project.title }}
+          </a>
+        </h2>
+      </article>
+    {% empty %}
+      <p>There are no projects available.</p>
+    {% endfor %}
+  </section>
+
+  {% include "includes/pagination.html" %}
+</main>

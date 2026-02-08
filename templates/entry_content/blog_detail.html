@@ -1,0 +1,47 @@
+<main>
+  <article>
+    <header>
+      <h1>{{ blog.title }}</h1>
+    </header>
+
+    <section aria-label="Blog content">
+      {% for block in blog.content_blocks.all %}
+        {% if block.type == "text" %}
+          <p>{{ block.text_content }}</p>
+
+        {% elif block.type == "image" %}
+          <figure>
+            <img src="{{ block.file.url }}" alt="">
+          </figure>
+
+        {% elif block.type == "video" %}
+          <figure>
+            <video controls>
+              <source src="{{ block.file.url }}">
+            </video>
+          </figure>
+
+        {% elif block.type == "gif" %}
+          <figure>
+            <img src="{{ block.file.url }}" alt="">
+          </figure>
+        {% endif %}
+      {% endfor %}
+    </section>
+
+    <footer>
+      <h2>Technologies used</h2>
+      <ul>
+        {% for tech in blog.technologies.all %}
+          <li>
+            <a href="{% url 'entry_content:technology_detail' tech.slug %}">
+              {{ tech.name }}
+            </a>
+          </li>
+        {% empty %}
+          <li>No technologies associated.</li>
+        {% endfor %}
+      </ul>
+    </footer>
+  </article>
+</main>
