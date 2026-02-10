@@ -1,0 +1,21 @@
+<main>
+  <header>
+    <h1>Technologies</h1>
+  </header>
+
+  <section>
+    <ul>
+      {% for technology in technologies %}
+        <li>
+          <a href="{% url 'entry_content:technology_detail' technology.slug %}">
+            {{ technology.name }}
+          </a>
+        </li>
+      {% empty %}
+        <li>No technologies available.</li>
+      {% endfor %}
+    </ul>
+  </section>
+
+  {% include "includes/pagination.html" %}
+</main>

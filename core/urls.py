@@ -34,6 +34,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     # Custom URLs
+    path('', include('apps.main.urls')),
     path('api/', include('apps.entry_content.urls')),
 
     # OpenAPI Schema

@@ -1,0 +1,35 @@
+<main>
+  <article>
+    <header>
+      <h1>{{ project.title }}</h1>
+    </header>
+
+    <section>
+      {% for block in project.content_blocks.all %}
+        {% if block.type == "text" %}
+          <p>{{ block.text_content }}</p>
+
+        {% else %}
+          <figure>
+            <img src="{{ block.file.url }}" alt="">
+          </figure>
+        {% endif %}
+      {% endfor %}
+    </section>
+
+    <footer>
+      <h2>Technologies used</h2>
+      <ul>
+        {% for tech in project.technologies.all %}
+          <li>
+            <a href="{% url 'technology_detail' tech.slug %}">
+              {{ tech.name }}
+            </a>
+          </li>
+        {% empty %}
+          <li>No technologies associated.</li>
+        {% endfor %}
+      </ul>
+    </footer>
+  </article>
+</main>

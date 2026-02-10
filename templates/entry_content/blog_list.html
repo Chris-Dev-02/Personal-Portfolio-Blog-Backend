@@ -1,0 +1,27 @@
+<main>
+  <header>
+    <h1>Blog</h1>
+
+    <form method="get" role="search">
+      <label for="search">Search</label>
+      <input id="search" type="search" name="q" value="{{ request.GET.q }}">
+      <button type="submit">Search</button>
+    </form>
+  </header>
+
+  <section aria-label="Blog list">
+    {% for blog in blogs %}
+      <article>
+        <h2>
+          <a href="{% url 'entry_content:blog_detail' blog.slug %}">
+            {{ blog.title }}
+          </a>
+        </h2>
+      </article>
+    {% empty %}
+      <p>There are no blog posts available.</p>
+    {% endfor %}
+  </section>
+
+  {% include "includes/pagination.html" %}
+</main>
